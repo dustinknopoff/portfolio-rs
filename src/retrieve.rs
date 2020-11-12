@@ -112,10 +112,10 @@ pub fn copy_resources(location: &'static str) -> Result<(), anyhow::Error> {
             let mut new_path = PathBuf::from("public");
             new_path.push(entry.path().file_name().unwrap());
             let mut old_file = File::open(entry.path())?;
-            let mut old_contents = String::new();
-            old_file.read_to_string(&mut old_contents)?;
+            let mut old_contents = Vec::new();
+            old_file.read_to_end(&mut old_contents)?;
             let mut new_file = File::create(&new_path)?;
-            new_file.write_all(&old_contents.as_bytes())?;
+            new_file.write_all(&old_contents)?;
         }
     }
     Ok(())
@@ -161,6 +161,7 @@ impl AsMut<PathBuf> for PublicPath {
 }
 
 impl PublicPath {
+    #[allow(dead_code)]
     pub fn to_src_path(&self) -> SourcePath {
         let mut new_path = PathBuf::from("content");
         new_path.push(self.0.file_name().unwrap());

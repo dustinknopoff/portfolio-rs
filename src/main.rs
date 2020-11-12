@@ -11,6 +11,14 @@ use cache::PostsDatabase;
 use retrieve::{copy_resources, find_content};
 use templates::layout::index;
 
+// TODO:
+// - All Tags Page
+// - Page for each Tag
+// - RSS Feed
+// - Search?
+// - Make config for Stuff?
+// - Watch for changes?
+
 fn main() {
     if !Path::new("public").exists() {
         DirBuilder::new().create("public").unwrap();
