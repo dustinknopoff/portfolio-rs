@@ -1,0 +1,23 @@
+[package]
+authors = ["Dustin Knopoff <rust@knopoff.dev>"]
+edition = "2018"
+name = "maud-blog"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ammonia = "3.1"
+anyhow = "1.0"
+chrono = {version = "0.4", features = ["serde"]}
+frontmatter = {git = "https://github.com/dustinknopoff/frontmatter"}
+hecs = "0.3"
+lazy_static = "1.4.0"
+maud = "0.22"
+pulldown-cmark = "0.8"
+salsa = "0.16"
+serde = {version = "1.0", features = ["derive"]}
+syntect = "4.4"
+walkdir = "2.3"
+serde_yaml = "0.8.14"
+rayon = "1.5.0"
