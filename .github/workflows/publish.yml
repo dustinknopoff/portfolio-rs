@@ -42,10 +42,11 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Run cargo test
+      - name: Build and Run
         uses: actions-rs/cargo@v1
         with:
-          command: run --release
+          command: run
+          args: --release
 
   lints:
     name: Lints
