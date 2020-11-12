@@ -62,6 +62,16 @@ a {
   text-align: center;
 }
 
+ul {
+  text-decoration: none;
+  list-style: none;
+  display: flex;
+}
+
+main ul > li {
+  padding: 5px;
+}
+
 .tagline > ul {
   text-decoration: none;
   list-style: none;
@@ -108,7 +118,7 @@ a {
   align-items: baseline;
 }
 
-.topline > h2 {
+.topline h2 {
   padding: 0;
   margin: 0;
   font-family: var(--title);
@@ -116,9 +126,10 @@ a {
   text-align: right;
 }
 
-.tags {
+.tags a {
   font-family: var(--mono);
   color: var(--tertiary-color);
+  padding: 5px;
 }
 
 /* MARK: FOOTER */
@@ -138,6 +149,15 @@ main img {
 
 main {
   overflow-y: scroll;
+}
+
+article a {
+  color: blue;
+}
+
+main blockquote {
+  padding: 10px;
+  font-style: italic;
 }
 
 @media (max-width: 480px) {

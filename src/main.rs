@@ -4,8 +4,6 @@ use std::{
     path::Path,
 };
 
-use maud::{html, Markup, DOCTYPE};
-
 pub(crate) mod cache;
 pub(crate) mod retrieve;
 pub(crate) mod templates;
@@ -22,12 +20,7 @@ fn main() {
     let files = find_content("content/").unwrap();
     db.add_posts(&files).unwrap();
     db.write_posts_to_file(&files, "public/posts").unwrap();
-    // let posts = as_posts(&files)
-    //     .into_iter()
-    //     .filter_map(|e| e.ok())
-    //     .collect::<Vec<_>>();
-    // write_posts_to_file(&posts, "public/posts").unwrap();
-    // let files = to_html(&posts);
+    dbg!(db.get_tags(&files));
     let markup = index(&db.five_most_recent(&files));
     let mut index = File::create("public/index.html").unwrap();
     index.write_all(&markup.into_string().as_bytes()).unwrap();

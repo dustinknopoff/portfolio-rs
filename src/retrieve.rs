@@ -2,20 +2,13 @@ use crate::templates::{layout::layout, markdown::Markdown};
 use chrono::prelude::*;
 use maud::{html, Markup};
 use serde::Deserialize;
-use std::{
-    fmt,
-    fs::{DirBuilder, File},
-    io::Read,
-    io::Write,
-    path::Path,
-    path::PathBuf,
-};
+use std::{fmt, fs::File, io::Read, io::Write, path::PathBuf};
 use walkdir::{DirEntry, WalkDir};
 #[derive(Debug, Clone)]
 pub struct Post {
     pub frontmatter: FrontMatter,
     pub content: String,
-    pub filename: PathBuf,
+    pub filename: SourcePath,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -60,8 +53,8 @@ where
 }
 
 impl Post {
-    pub fn new(filename: PathBuf) -> Result<Self, anyhow::Error> {
-        let mut file = File::open(filename.as_path())?;
+    pub fn new(filename: SourcePath) -> Result<Self, anyhow::Error> {
+        let mut file = File::open(filename.0.as_path())?;
         let mut content = String::new();
         file.read_to_string(&mut content)?;
         let (matter, content) =
@@ -99,39 +92,14 @@ fn is_md(entry: &DirEntry) -> bool {
     entry.path().extension().map(|s| s == "md").unwrap_or(false)
 }
 
-pub fn find_content(location: &'static str) -> Result<Vec<PathBuf>, anyhow::Error> {
+pub fn find_content(location: &'static str) -> Result<Vec<SourcePath>, anyhow::Error> {
     Ok(WalkDir::new(location)
         .into_iter()
         .filter_entry(|e| !is_hidden(e))
         .filter_map(|e| e.ok())
         .filter(|e| is_md(e))
-        .map(|entry| entry.into_path())
+        .map(|entry| SourcePath(entry.into_path()))
         .collect::<Vec<_>>())
-}
-
-pub fn as_posts(paths: &[PathBuf]) -> Vec<Result<Post, anyhow::Error>> {
-    paths
-        .iter()
-        .map(|path| Post::new(path.to_path_buf()))
-        .collect()
-}
-
-pub fn write_posts_to_file(
-    posts: &[Post],
-    in_directory: &'static str,
-) -> Result<(), anyhow::Error> {
-    if !Path::new(in_directory).exists() {
-        DirBuilder::new().recursive(true).create(in_directory)?;
-    }
-    for post in posts.iter() {
-        let mut path = PathBuf::from(in_directory);
-        let file_name = post.filename.file_name().unwrap();
-        path.push(file_name);
-        path.set_extension("html");
-        let mut file = File::create(path)?;
-        file.write_all(post.as_html().into_string().as_bytes())?;
-    }
-    Ok(())
 }
 
 pub fn copy_resources(location: &'static str) -> Result<(), anyhow::Error> {
@@ -151,4 +119,51 @@ pub fn copy_resources(location: &'static str) -> Result<(), anyhow::Error> {
         }
     }
     Ok(())
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct SourcePath(pub PathBuf);
+
+impl SourcePath {
+    pub fn to_public_path(&self) -> PublicPath {
+        let mut new_path = PathBuf::from("public");
+        new_path.push(self.0.file_name().unwrap());
+        new_path.set_extension("html");
+        PublicPath(new_path)
+    }
+}
+
+impl AsRef<PathBuf> for SourcePath {
+    fn as_ref(&self) -> &PathBuf {
+        &self.0
+    }
+}
+
+impl AsMut<PathBuf> for SourcePath {
+    fn as_mut(&mut self) -> &mut PathBuf {
+        &mut self.0
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct PublicPath(PathBuf);
+
+impl AsRef<PathBuf> for PublicPath {
+    fn as_ref(&self) -> &PathBuf {
+        &self.0
+    }
+}
+
+impl AsMut<PathBuf> for PublicPath {
+    fn as_mut(&mut self) -> &mut PathBuf {
+        &mut self.0
+    }
+}
+
+impl PublicPath {
+    pub fn to_src_path(&self) -> SourcePath {
+        let mut new_path = PathBuf::from("content");
+        new_path.push(self.0.file_name().unwrap());
+        SourcePath(new_path)
+    }
 }

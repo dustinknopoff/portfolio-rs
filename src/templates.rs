@@ -67,7 +67,8 @@ pub mod markdown {
             let mut content = String::new();
             Parser::new(self.0.as_ref()).for_each(|x| {
                 if let Event::Text(ref txt) = x {
-                    content.push_str(&txt.to_string())
+                    content.push_str(&txt.to_string());
+                    content.push_str(" ");
                 }
             });
             html! {
@@ -78,18 +79,24 @@ pub mod markdown {
         }
     }
 
-    pub fn preview(title: &str, tags: Option<&str>, blurb: Markup, url: &str) -> Markup {
+    pub fn preview(title: &str, tags: Option<&[String]>, blurb: Markup, url: &str) -> Markup {
         html! {
-        a href=(url) {
             div.card {
                 div.topline {
-                    span.tags {
+                    ul.tags {
                         @if let Some(tags) = tags {
-                            (tags)
+                            @for tag in tags {
+                                a href={"/tags/" (tag)} {
+                                    li { (tag)}
+                                }
+                            }
                         }
                     }
+                    a href=(url) {
                         h2 { (title)}
                     }
+                }
+                a href=(url) {
                     (blurb)
                 }
             }
@@ -128,7 +135,7 @@ pub mod layout {
             "Dustin Knopoff",
             html! {
                 @for post in five_recent {
-                   ( preview(&post.frontmatter.title, Some(&post.frontmatter.tags.join(", ")), html! {
+                   ( preview(&post.frontmatter.title, Some(&post.frontmatter.tags), html! {
                        (Blurb(&post.content))
                    }, "/posts"))
                 }
