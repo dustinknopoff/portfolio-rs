@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: Shoe Scraper
 link: https://github.com/dustinknopoff/py-explore/blob/master/vivo.py
 date: 2018-05-18 08:31

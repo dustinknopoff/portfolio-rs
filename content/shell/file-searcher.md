@@ -1,5 +1,5 @@
 ---
-tags: [shell]
+tags: [shell, dev]
 title: Directory and File Searcher
 link: https://gist.github.com/dustinknopoff/d01011beaf8b4248e5f39abd2396d040
 date: 2018-08-21 08:31

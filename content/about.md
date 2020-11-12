@@ -13,7 +13,7 @@ At the moment, I am completely enamored with [Rust](https://www.rust-lang.org) a
 
 ## Cooking
 
-TODO.
+![](https://res.cloudinary.com/dknopoff/image/upload/v1605190430/portfolio/brussels.jpg)
 
 ## Taekwondo
 

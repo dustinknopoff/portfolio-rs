@@ -1,5 +1,5 @@
 ---
-tags: [shell]
+tags: [shell, dev]
 title: Save Emails as PDFs
 link: https://github.com/dustinknopoff/py-explore/tree/master/save-emails
 date: 2018-07-07 08:31

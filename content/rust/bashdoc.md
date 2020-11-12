@@ -1,5 +1,5 @@
 ---
-tags: [rust]
+tags: [rust, dev]
 title: Bashdoc - Round 1
 link: https://github.com/dustinknopoff/bashdoc/tree/v0.0.5
 date: 2018-10-24 08:31

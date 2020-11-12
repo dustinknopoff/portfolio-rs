@@ -1,5 +1,5 @@
 ---
-tags: [shell]
+tags: [shell, dev]
 title: Making a Vim Extension for TeaCode
 link: https://github.com/dustinknopoff/TeaCode-Vim-Extension
 date: 2018-09-13 08:31

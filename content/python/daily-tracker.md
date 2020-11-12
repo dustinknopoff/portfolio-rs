@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: Daily Tracker
 link: https://gist.github.com/dustinknopoff/e63363836aedf54ffc50c71c0b57c73e
 date: 2019-01-01 08:31

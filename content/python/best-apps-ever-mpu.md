@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: Best Apps Ever MPU
 link: https://github.com/dustinknopoff/py-explore/blob/master/bestappsever-talk.py
 date: 2018-06-21 08:31

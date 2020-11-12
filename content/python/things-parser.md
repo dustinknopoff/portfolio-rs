@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: Things 3 Parser
 link: https://github.com/dustinknopoff/tparse
 date: 2018-06-12 08:31

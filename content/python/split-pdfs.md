@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: Splitting PDFs
 link: https://github.com/dustinknopoff/py-explore/blob/master/splitpdfs.py
 date: 2018-07-07 08:31

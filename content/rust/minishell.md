@@ -1,5 +1,5 @@
 ---
-tags: [rust]
+tags: [rust, dev]
 title: Building a Mini Shell in Rust
 link: https://github.com/dustinknopoff/rust-minishell
 date: 2018-10-16 08:31

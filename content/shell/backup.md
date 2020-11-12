@@ -1,5 +1,5 @@
 ---
-tags: [shell]
+tags: [shell, dev]
 title: Backup and Setup a Mac from the Terminal
 link: https://gist.github.com/dustinknopoff/f110d6a247a3881d49bba6ef125997d2
 date: 2019-05-26 08:31

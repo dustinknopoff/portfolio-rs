@@ -1,5 +1,5 @@
 ---
-tags: [rust]
+tags: [rust, dev]
 title: Bashdoc - Parsing with Nom
 link: https://github.com/dustinknopoff/bashdoc/tree/0.2.0
 date: 2018-12-10 08:31

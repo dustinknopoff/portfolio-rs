@@ -1,5 +1,5 @@
 ---
-tags: [python]
+tags: [python, dev]
 title: TeaCode Previewer
 link: https://github.com/dustinknopoff/teacodebundles
 date: 2018-07-08 08:31
