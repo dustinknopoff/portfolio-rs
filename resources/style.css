@@ -85,7 +85,7 @@ main ul > li {
 }
 
 .tagline > ul > li {
-  padding: 20px;
+  padding: 5%;
 }
 
 .tagline > ul > li > a {
@@ -95,7 +95,7 @@ main ul > li {
 
 .logo {
   grid-row: 2;
-  height: 100%;
+  max-width: 100%;
 }
 
 /* MARK: POST_LIST */
