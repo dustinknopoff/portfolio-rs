@@ -18,7 +18,7 @@ jobs:
       - name: cache
         uses: actions/cache@v2
         with:
-        path: |
+          path: |
           ~/.cargo/registry
           ~/.cargo/git
           target
@@ -44,7 +44,7 @@ jobs:
       - name: cache
         uses: actions/cache@v2
         with:
-        path: |
+          path: |
           ~/.cargo/registry
           ~/.cargo/git
           target
@@ -85,7 +85,7 @@ jobs:
       - name: cache
         uses: actions/cache@v2
         with:
-        path: |
+          path: |
           ~/.cargo/registry
           ~/.cargo/git
           target
