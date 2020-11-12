@@ -1,4 +1,4 @@
-use crate::retrieve::{Post, PublicPath, SourcePath};
+use crate::retrieve::{Post, SourcePath};
 use std::{
     collections::HashMap,
     fs::{DirBuilder, File},
@@ -79,14 +79,13 @@ impl PostsDatabase {
         posts.into_iter().take(5).collect()
     }
 
-    pub fn get_tags(&self, paths: &[SourcePath]) -> HashMap<String, Vec<PublicPath>> {
-        let mut map: HashMap<String, Vec<PublicPath>> = HashMap::new();
+    pub fn get_tags(&self, paths: &[SourcePath]) -> HashMap<String, Vec<Arc<Post>>> {
+        let mut map: HashMap<String, Vec<Arc<Post>>> = HashMap::new();
         for path in paths {
             let post = self.file_path(path.clone());
             for tag in post.frontmatter.tags.iter() {
-                dbg!(&tag);
                 let list = map.entry(tag.clone()).or_default();
-                list.push(path.to_public_path());
+                list.push(post.clone());
             }
         }
         map

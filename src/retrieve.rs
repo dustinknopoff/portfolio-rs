@@ -125,8 +125,12 @@ pub fn copy_resources(location: &'static str) -> Result<(), anyhow::Error> {
 pub struct SourcePath(pub PathBuf);
 
 impl SourcePath {
-    pub fn to_public_path(&self) -> PublicPath {
-        let mut new_path = PathBuf::from("public");
+    pub fn to_public_path(&self, include_dir: bool) -> PublicPath {
+        let mut new_path = if include_dir {
+            PathBuf::from("public/posts")
+        } else {
+            PathBuf::from("posts/")
+        };
         new_path.push(self.0.file_name().unwrap());
         new_path.set_extension("html");
         PublicPath(new_path)
@@ -146,7 +150,7 @@ impl AsMut<PathBuf> for SourcePath {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct PublicPath(PathBuf);
+pub struct PublicPath(pub PathBuf);
 
 impl AsRef<PathBuf> for PublicPath {
     fn as_ref(&self) -> &PathBuf {

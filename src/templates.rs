@@ -86,17 +86,17 @@ pub mod markdown {
                     ul.tags {
                         @if let Some(tags) = tags {
                             @for tag in tags {
-                                a href={"/tags/" (tag)} {
+                                a href={"/tags/" (tag) ".html"} {
                                     li { (tag)}
                                 }
                             }
                         }
                     }
-                    a href=(url) {
+                    a href={"/" (url)} {
                         h2 { (title)}
                     }
                 }
-                a href=(url) {
+                a href={"/" (url)} {
                     (blurb)
                 }
             }
@@ -137,7 +137,7 @@ pub mod layout {
                 @for post in five_recent {
                    ( preview(&post.frontmatter.title, Some(&post.frontmatter.tags), html! {
                        (Blurb(&post.content))
-                   }, "/posts"))
+                   }, post.filename.to_public_path(false).0.to_str().unwrap()))
                 }
             },
         )
@@ -158,17 +158,17 @@ pub mod layout {
                 .tagline {
                     ul {
                         li {
-                            a href="/tags/dev" {
+                            a href="/tags/dev.html" {
                                 span { "dev"}
                             }
                         }
                         li {
-                            a href="/tags/design" {
+                            a href="/tags/design.html" {
                                 span { "design"}
                             }
                         }
                         li {
-                            a href="/tags" {
+                            a href="/tags/tags.html" {
                                 span { "tags"}
                             }
                         }
@@ -219,5 +219,77 @@ pub mod layout {
             meta name="msapplication-TileImage" content="/ms-icon-144x144.png" {}
             meta name="theme-color" content="#ffffff" {}
         }
+    }
+}
+
+pub mod pages {
+    use std::{
+        collections::HashMap,
+        fs::{DirBuilder, File},
+        io::Write,
+        path::Path,
+        path::PathBuf,
+        sync::Arc,
+    };
+
+    use maud::{html, Markup};
+
+    use super::{
+        layout::layout,
+        markdown::{preview, Blurb},
+    };
+    use crate::retrieve::Post;
+
+    pub fn write_tags_to_file(
+        tag_map: HashMap<String, Vec<Arc<Post>>>,
+    ) -> Result<(), anyhow::Error> {
+        if !Path::new("public/tags").exists() {
+            DirBuilder::new().recursive(true).create("public/tags")?;
+        }
+        let keys = tag_map.keys().collect::<Vec<_>>();
+        let all_tags = tags(&keys);
+        {
+            let mut file = File::create("public/tags/tags.html")?;
+            file.write_all(all_tags.into_string().as_bytes())?;
+        }
+        for key in keys {
+            let tag_html = tag(key, &tag_map[key]);
+            {
+                let mut path = PathBuf::from("public/tags");
+                path.push(key);
+                path.set_extension("html");
+                let mut file = File::create(path)?;
+                file.write_all(tag_html.into_string().as_bytes())?;
+            }
+        }
+        Ok(())
+    }
+
+    pub fn tags(tags: &[&String]) -> Markup {
+        layout(
+            "Dustin Knopoff | Tags",
+            html! {
+                h3 { "Tags"}
+                @for tag in tags {
+                    a href={"/tags/" (tag) ".html"} {
+                        li { (tag)}
+                    }
+                }
+            },
+        )
+    }
+
+    pub fn tag(tag: &str, posts: &[Arc<Post>]) -> Markup {
+        layout(
+            &format!("Dustin Knopoff | {}", tag),
+            html! {
+                h3 { (tag)}
+                @for post in posts {
+                   ( preview(&post.frontmatter.title, Some(&post.frontmatter.tags), html! {
+                       (Blurb(&post.content))
+                   }, post.filename.to_public_path(false).0.to_str().unwrap()))
+                }
+            },
+        )
     }
 }
