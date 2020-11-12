@@ -13,6 +13,7 @@ use templates::{layout::index, pages::write_tags_to_file};
 
 // TODO:
 // - RSS Feed
+// - Mobile support
 // - Search?
 // - Make config for Stuff?
 // - Watch for changes?
@@ -25,6 +26,7 @@ fn main() -> Result<(), anyhow::Error> {
     let mut db = PostsDatabase::default();
     let files = find_content("content/")?;
     db.add_posts(&files)?;
+    db.rss_to_file(db.generate_rss(&files)?)?;
     db.write_posts_to_file(&files, "public/posts")?;
     write_tags_to_file(db.get_tags(&files))?;
     let markup = index(&db.five_most_recent(&files));

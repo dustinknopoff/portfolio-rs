@@ -17,39 +17,45 @@ pub struct FrontMatter {
     pub title: String,
     pub link: String,
     #[serde(deserialize_with = "from_frontmatter")]
-    pub date: NaiveDateTime,
+    pub date: DateTime<FixedOffset>,
     #[serde(rename = "linkText")]
     pub link_text: Option<String>,
 }
 
 use serde::de;
 
-struct NaiveDateTimeVisitor;
+struct DateTimeVisitor;
 
-impl<'de> de::Visitor<'de> for NaiveDateTimeVisitor {
-    type Value = NaiveDateTime;
+impl<'de> de::Visitor<'de> for DateTimeVisitor {
+    type Value = DateTime<FixedOffset>;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "a string represents chrono::NaiveDateTime")
+        write!(
+            formatter,
+            "a string represents chrono::DateTime<FixedOffset>"
+        )
     }
 
     fn visit_str<E>(self, s: &str) -> Result<Self::Value, E>
     where
         E: de::Error,
     {
+        let hour = 3600;
+        let datetime = FixedOffset::west(5 * hour);
+        let str = format!("{} {}", s, datetime);
         // 2018-06-26 08:31
-        match NaiveDateTime::parse_from_str(s, "%Y-%m-%d %H:%M") {
+        match DateTime::parse_from_str(&str, "%Y-%m-%d %H:%M %:z") {
             Ok(t) => Ok(t),
             Err(_) => Err(de::Error::invalid_value(de::Unexpected::Str(s), &self)),
         }
     }
 }
 
-fn from_frontmatter<'de, D>(d: D) -> Result<NaiveDateTime, D::Error>
+fn from_frontmatter<'de, D>(d: D) -> Result<DateTime<FixedOffset>, D::Error>
 where
     D: de::Deserializer<'de>,
 {
-    d.deserialize_str(NaiveDateTimeVisitor)
+    d.deserialize_str(DateTimeVisitor)
 }
 
 impl Post {

@@ -577,6 +577,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "mime"
+version = "0.3.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
+
+[[package]]
 name = "miniz_oxide"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -914,8 +920,11 @@ version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "99979205510c60f80a119dedbabd0b8426517384edf205322f8bcd51796bcef9"
 dependencies = [
+ "chrono",
  "derive_builder",
+ "mime",
  "quick-xml",
+ "url",
 ]
 
 [[package]]

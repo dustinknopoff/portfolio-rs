@@ -191,7 +191,7 @@ pub mod layout {
                         javascript:window.location.href=atob('bWFpbHRvOndlYi1jb250YWN0QGtub3BvZmYuZGV2')"  { img src="/mail.svg" {}}
                         a href="https://github.com/dustinknopoff" rel="noopener noreferrer nofollow" target="_blank"{ img src="/github.svg" {}}
                         a href="https://linkedin.com/in/dustinknopoff" { img src="/linkedin.svg" {}}
-                        a href="https://dustinknopoff.dev/rss.xml" { img src="/rss.svg" {}}
+                        a href="/feed.xml" { img src="/rss.svg" {}}
                     }
                     div{}
                 }

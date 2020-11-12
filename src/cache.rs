@@ -1,4 +1,11 @@
-use crate::retrieve::{Post, SourcePath};
+use crate::{
+    retrieve::{Post, SourcePath},
+    templates::markdown::{Blurb, Markdown},
+};
+use anyhow::anyhow;
+use chrono::Local;
+use maud::html;
+use rss::{Channel, ChannelBuilder, Item, ItemBuilder};
 use std::{
     collections::HashMap,
     fs::{DirBuilder, File},
@@ -89,5 +96,60 @@ impl PostsDatabase {
             }
         }
         map
+    }
+
+    pub fn generate_rss(&self, paths: &[SourcePath]) -> Result<Channel, anyhow::Error> {
+        let mut items: Vec<Item> = Vec::new();
+        for path in paths.iter() {
+            let post = self.file_path(path.clone());
+            let link = format!(
+                "https://dustinknopoff.dev/{}",
+                post.filename.to_public_path(false).0.to_str().unwrap()
+            );
+            items.push(
+                ItemBuilder::default()
+                    .title(post.frontmatter.title.clone())
+                    .link(link)
+                    .pub_date(post.frontmatter.date.to_rfc2822())
+                    .description(html! {(Blurb(&post.content))}.into_string())
+                    .content(html! {(Markdown(&post.content))}.into_string())
+                    .build()
+                    .map_err(|x| anyhow!("{}", x))?,
+            );
+        }
+        let namespaces = {
+            let mut namespaces = HashMap::new();
+            namespaces.insert(
+                String::from("atom"),
+                String::from("http://www.w3.org/2005/Atom"),
+            );
+            namespaces.insert(
+                String::from("dc"),
+                String::from("http://purl.org/dc/elements/1.1/"),
+            );
+            namespaces.insert(
+                String::from("content"),
+                String::from("http://purl.org/rss/1.0/modules/content/"),
+            );
+            namespaces
+        };
+        use rss::validation::Validate;
+        let channel = ChannelBuilder::default()
+            .title("Dustin Knopoff")
+            .link("http://dustinknopoff.dev")
+            .description("rustacean, cook, and martial arts enthusiast")
+            .last_build_date(Local::now().to_rfc2822())
+            .items(items)
+            .namespaces(namespaces)
+            .build()
+            .map_err(|x| anyhow!("{}", x))?;
+        channel.validate()?;
+        Ok(channel)
+    }
+
+    pub fn rss_to_file(&self, channel: Channel) -> Result<(), anyhow::Error> {
+        let mut file = File::create("public/feed.xml")?;
+        file.write_all(channel.to_string().as_bytes())?;
+        Ok(())
     }
 }
