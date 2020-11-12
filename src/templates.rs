@@ -176,8 +176,8 @@ pub mod layout {
                     p { "rustacean, cook, and martial arts enthusiast"}
                     div {}
                 }
-                a href="/" {
-                    img.logo src="/DK Logo.svg" { }
+                a.logo href="/" {
+                    img.logo src="/DK Logo.png" { }
                 }
             }
             div#main {

@@ -39,6 +39,7 @@ a {
   grid-area: sidebar;
   display: grid;
   grid-template-rows: 40vh 50vh;
+  grid-template-columns: 100%;
   font-size: var(--base-font-size);
   background: var(--secondary-color);
   font-family: var(--mono);

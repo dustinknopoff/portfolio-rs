@@ -1,5 +1,5 @@
 ---
-tags: [python, devs]
+tags: [python, dev]
 title: Simple Subscriptions
 link: https://github.com/dustinknopoff/py-explore/blob/master/subscriptions.py
 date: 2018-07-20 08:31
