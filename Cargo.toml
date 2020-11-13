@@ -10,6 +10,7 @@ version = "0.1.0"
 ammonia = "3.1"
 anyhow = "1.0"
 chrono = {version = "0.4", features = ["serde"]}
+escaper = "0.1.0"
 frontmatter = {git = "https://github.com/dustinknopoff/frontmatter"}
 hecs = {version = "0.3", optional = true}
 lazy_static = "1.4.0"

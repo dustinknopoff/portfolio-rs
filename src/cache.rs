@@ -4,6 +4,7 @@ use crate::{
 };
 use anyhow::anyhow;
 use chrono::Local;
+use escaper::encode_minimal;
 use maud::html;
 use rss::{Channel, ChannelBuilder, Item, ItemBuilder};
 use std::{
@@ -111,8 +112,12 @@ impl PostsDatabase {
                     .title(post.frontmatter.title.clone())
                     .link(link)
                     .pub_date(post.frontmatter.date.to_rfc2822())
-                    .description(html! {(Blurb(&post.content))}.into_string())
-                    .content(html! {(Markdown(&post.content))}.into_string())
+                    .description(encode_minimal(
+                        &html! {(Blurb(&post.content))}.into_string(),
+                    ))
+                    .content(encode_minimal(
+                        &html! {(Markdown(&post.content))}.into_string(),
+                    ))
                     .build()
                     .map_err(|x| anyhow!("{}", x))?,
             );
