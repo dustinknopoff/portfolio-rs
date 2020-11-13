@@ -60,7 +60,7 @@ a {
   justify-content: space-between;
 }
 
-.tagline > p {
+.tagline > a {
   text-align: center;
 }
 
@@ -149,6 +149,10 @@ main img {
   max-width: 100%;
 }
 
+.logo > img {
+  max-width: 100%;
+}
+
 main {
   overflow-y: scroll;
 }
@@ -162,20 +166,60 @@ main blockquote {
   font-style: italic;
 }
 
-@media (max-width: 480px) {
+@media only screen and (max-device-width: 480px) {
   body {
     display: grid;
     grid-template-areas:
       "sidebar"
-      "nav"
       "content";
-    /* grid-template-rows: 100vw; */
-    grid-template-columns: 100vh 10vh 90vh;
-    grid-auto-flow: column;
+    grid-template-columns: 100vw;
+    grid-template-rows: 110vh 90vh;
+    width: 100vw;
+    padding: 0 0 0 0;
+    margin: 0;
     height: 200vh;
+    grid-auto-flow: column;
+    color: var(--primary-color);
+    font-family: var(--content);
+    overflow: scroll;
+  }
+
+  .tagline {
+    grid-area: 2;
+  }
+
+  .tagline > ul {
+    position: sticky;
+    top: 0;
   }
 
   #sidebar {
-    position: relative;
+    padding: 0;
+    grid-area: sidebar;
+    background: white;
+    margin: 0;
+    grid-template-rows: 100vh 10vh;
+  }
+
+  .logo {
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo > img {
+    max-width: 100%;
+  }
+
+  .tagline {
+    flex-direction: column-reverse;
+    background: var(--secondary-color);
+  }
+
+  #main {
+    overflow: auto;
   }
 }

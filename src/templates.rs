@@ -173,11 +173,11 @@ pub mod layout {
                             }
                         }
                     }
-                    p { "rustacean, cook, and martial arts enthusiast"}
+                    a href="/posts/about.html" { "rustacean, cook, and martial arts enthusiast"}
                     div {}
                 }
                 a.logo href="/" {
-                    img.logo src="/DK Logo.png" { }
+                    img src="/DK Logo.png" { }
                 }
             }
             div#main {
