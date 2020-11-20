@@ -12,25 +12,59 @@ use retrieve::{copy_resources, find_content};
 use templates::{layout::index, pages::write_tags_to_file};
 
 // TODO:
-// - RSS Feed
-// - Mobile support
 // - Search?
 // - Make config for Stuff?
 // - Watch for changes?
 
-fn main() -> Result<(), anyhow::Error> {
-    if !Path::new("public").exists() {
-        DirBuilder::new().create("public")?;
+struct Pipeline {
+    output_dir: &'static str,
+    resource_dir: &'static str,
+    content_dir: &'static str,
+    db: PostsDatabase,
+}
+
+impl Pipeline {
+    pub fn new(
+        output_dir: &'static str,
+        resource_dir: &'static str,
+        content_dir: &'static str,
+    ) -> Self {
+        Pipeline {
+            output_dir,
+            resource_dir,
+            content_dir,
+            db: PostsDatabase::default(),
+        }
     }
-    copy_resources("resources")?;
-    let mut db = PostsDatabase::default();
-    let files = find_content("content/")?;
-    db.add_posts(&files)?;
-    db.rss_to_file(db.generate_rss(&files)?)?;
-    db.write_posts_to_file(&files, "public/posts")?;
-    write_tags_to_file(db.get_tags(&files))?;
-    let markup = index(&db.five_most_recent(&files));
-    let mut index = File::create("public/index.html")?;
-    index.write_all(&markup.into_string().as_bytes())?;
+
+    pub fn build(mut self) -> Result<(), anyhow::Error> {
+        if !Path::new(self.output_dir).exists() {
+            log::debug!("public/ did not exist. Creating now");
+            DirBuilder::new().create("public")?;
+        }
+        copy_resources(self.resource_dir)?;
+        log::debug!("copied resources in to public/");
+        let files = find_content(self.content_dir)?;
+        log::debug!("Found {} markdown files in content/", files.len());
+        self.db.add_posts(&files)?;
+        log::debug!("imported files to salsa db");
+        self.db.rss_to_file(self.db.generate_rss(&files)?)?;
+        log::debug!("Generated and wrote RSS.");
+        self.db.write_posts_to_file(&files, "public/posts")?;
+        log::debug!("Generated and wrote posts to html files");
+        write_tags_to_file(self.db.get_tags(&files))?;
+        log::debug!("Created general tags page");
+        let markup = index(&self.db.five_most_recent(&files));
+        log::debug!("Retrieved top 5 posts for index building");
+        let mut index = File::create("public/index.html")?;
+        index.write_all(&markup.into_string().as_bytes())?;
+        log::debug!("Created the index.html");
+        Ok(())
+    }
+}
+
+fn main() -> Result<(), anyhow::Error> {
+    env_logger::init();
+    Pipeline::new("public/", "resources/", "content/").build()?;
     Ok(())
 }

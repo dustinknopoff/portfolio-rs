@@ -68,7 +68,7 @@ pub mod markdown {
             Parser::new(self.0.as_ref()).for_each(|x| {
                 if let Event::Text(ref txt) = x {
                     content.push_str(&txt.to_string());
-                    content.push_str(" ");
+                    content.push(' ');
                 }
             });
             html! {

@@ -31,6 +31,7 @@ body {
 a {
   text-decoration: none;
   color: var(--primary-color);
+  cursor: pointer;
 }
 
 /* MARK: SIDEBAR */
@@ -155,6 +156,7 @@ main img {
 
 main {
   overflow-y: scroll;
+  padding: 0 20px 0 20px;
 }
 
 article a {
