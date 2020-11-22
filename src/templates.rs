@@ -196,6 +196,9 @@ pub mod layout {
                     div{}
                 }
             }
+            @if cfg!(debug_assertions) {
+                script src="/index.js" {}
+            }
         }
     }
 

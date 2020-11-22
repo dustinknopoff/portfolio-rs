@@ -7,24 +7,36 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# HTML sanitization
 ammonia = "3.1"
+# Error handling
 anyhow = "1.0"
+# Time manipilation
 chrono = {version = "0.4", features = ["serde"]}
-escaper = "0.1.0"
+# Logging
+env_logger = "0.8"
+# HTML escaping
+escaper = "0.1"
+# Frontmatter from markdown
 frontmatter = {git = "https://github.com/dustinknopoff/frontmatter"}
-hecs = {version = "0.3", optional = true}
-lazy_static = "1.4.0"
+# For Syntect
+lazy_static = "1.4"
+# Logging
+log = "0.4"
+# HTML templating in Rust
 maud = "0.22"
+# markdown -> html
 pulldown-cmark = "0.8"
-rayon = {version = "1.5", optional = true}
+# rayon = {version = "1.5", optional = true}
+# Generate RSS feed
 rss = {version = "1.9", features = ["validation"]}
+# Caching content
 salsa = "0.16"
 serde = {version = "1.0", features = ["derive"]}
 serde_yaml = "0.8"
+# Syntax highlighting
 syntect = {version = "4.4", default-features = false, features = ["default-fancy"]}
 walkdir = "2.3"
-log = "0.4.11"
-env_logger = "0.8.2"
 
 [profile.dev]
 opt-level = 1
